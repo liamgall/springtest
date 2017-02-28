@@ -11,7 +11,7 @@
 	<div align="center">
 		        
 		<h2>가입을 환영합니다.</h2>
-		<table>
+		<table style="border: 1px solid black">
 			<tr>
 				<td>이메일주소 :</td>
 				<td>${userForm.email}</td>

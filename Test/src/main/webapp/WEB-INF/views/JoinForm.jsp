@@ -21,21 +21,24 @@
 			<form:form action="/InfoValidation" commandName="userForm">
 				<tr>
 					<td align="left" width="20%">Email:</td>
-					<td align="left" width="40%"><form:input path="email" value="${eMail}"
-							size="30" readonly="true" style="background-color:#EBEBE4;"/></td>
+					<td align="left" width="40%"><form:input path="email"
+							value="${eMail}" size="30" readonly="true"
+							style="background-color:#EBEBE4;" /></td>
 					<td align="left"><form:errors path="email" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>우편 번호 :</td>
 					<td><form:input type="text" path="postcode5" name=""
-							class="postcodify_postcode5" value="" style="width:50px" readonly="true"/>
+							class="postcodify_postcode5" value="" style="width:50px"
+							readonly="true" />
 						<button id="postcodify_search_button" type="button">검색</button></td>
 					<td><form:errors path="postcode5" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>도로명주소 :</td>
 					<td><form:input type="text" path="address" name=""
-							class="postcodify_address" value="" style="width:300px" readonly="true" /></td>
+							class="postcodify_address" value="" style="width:300px"
+							readonly="true" /></td>
 					<td><form:errors path="address" cssClass="error" /></td>
 				</tr>
 				<tr>
@@ -47,7 +50,8 @@
 				<tr>
 					<td>참고항목 :</td>
 					<td><form:input type="text" path="extra_info" name=""
-							class="postcodify_extra_info" value="" style="width:300px" readonly="true" /></td>
+							class="postcodify_extra_info" value="" style="width:300px"
+							readonly="true" /></td>
 					<td><form:errors path="extra_info" cssClass="error" /></td>
 				</tr>
 				<tr>
@@ -76,6 +80,7 @@
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script src="../js/captcha/jquery.realperson.js"></script>
 <script>
 	$(function() {
 		$("#postcodify_search_button").postcodifyPopUp();
@@ -83,7 +88,15 @@
 
 	/* [!@#$%^*+=-] 이부분 [^a-zA-Z0-9] 로 대체가능 */
 	$('#password1').keyup(function() {
-
+		
 	});
+	
+	
+	
+	
+	
+	
+	
+	
 </script>
 </html>
