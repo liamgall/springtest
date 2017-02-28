@@ -23,7 +23,6 @@ public class UserController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("JoinForm");
         mav.addObject("eMail", java.net.URLDecoder.decode(eMail,"UTF-8"));
-        System.out.println(eMail);
     	User user = new User();
         model.put("userForm", user);
         return mav;
@@ -33,11 +32,9 @@ public class UserController {
     public String doLogin(@Valid @ModelAttribute("userForm") User userForm,
             BindingResult result, Map<String, Object> model) {
 
-        System.out.println("gggg");
         if (result.hasErrors()) {
             return "JoinForm";
         }
-        System.out.println("ggg"+userForm);
  
         return "JoinSuccess";
     }

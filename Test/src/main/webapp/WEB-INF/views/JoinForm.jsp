@@ -18,7 +18,7 @@
 <body>
 	<div align="center">
 		<table border="0" width="80%">
-			<form:form action="/InfoValidation" commandName="userForm">
+			<form:form id="form" action="/InfoValidation" commandName="userForm">
 				<tr>
 					<td align="left" width="20%">Email:</td>
 					<td align="left" width="40%"><form:input path="email"
@@ -28,7 +28,7 @@
 				</tr>
 				<tr>
 					<td>우편 번호 :</td>
-					<td><form:input type="text" path="postcode5" name=""
+					<td><form:input type="text" id="postcode5" path="postcode5" name=""
 							class="postcodify_postcode5" value="" style="width:50px"
 							readonly="true" />
 						<button id="postcodify_search_button" type="button">검색</button></td>
@@ -36,41 +36,41 @@
 				</tr>
 				<tr>
 					<td>도로명주소 :</td>
-					<td><form:input type="text" path="address" name=""
+					<td><form:input type="text" id="address" path="address" name=""
 							class="postcodify_address" value="" style="width:300px"
 							readonly="true" /></td>
 					<td><form:errors path="address" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>상세주소 :</td>
-					<td><form:input type="text" path="details" name=""
+					<td><form:input type="text" id="details" path="details" name=""
 							class="postcodify_details" value="" style="width:300px" /></td>
 					<td><form:errors path="details" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>참고항목 :</td>
-					<td><form:input type="text" path="extra_info" name=""
+					<td><form:input type="text" id="extra_info" path="extra_info" name=""
 							class="postcodify_extra_info" value="" style="width:300px"
 							readonly="true" /></td>
 					<td><form:errors path="extra_info" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>전화번호 :</td>
-					<td><form:input path="phoneNumber" size="30" /></td>
+					<td><form:input path="phoneNumber" id="phoneNumber" /></td>
 					<td><form:errors path="phoneNumber" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>비밀번호 :</td>
-					<td><form:password path="password" size="30" /></td>
+					<td><form:password path="password" id="password" /></td>
 					<td><form:errors path="password" cssClass="error" /></td>
 				</tr>
 				<tr>
 					<td>비밀번호 확인 :</td>
-					<td><input type="password" /></td>
+					<td><input type="password" id="password2" /></td>
 				</tr>
 				<tr>
 					<td></td>
-					<td align="center"><input type="submit" value="제출" /></td>
+					<td align="center"><input type="submit" id="submit" value="제출" /></td>
 					<td></td>
 				</tr>
 			</form:form>
@@ -80,23 +80,92 @@
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-<script src="../js/captcha/jquery.realperson.js"></script>
 <script>
+	var regexEMail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/; // 이메일 검사식
+	var regexPhoneNumber = /^\d{3}-\d{3,4}-\d{4}$/; // 전화번호 검사식
+	var regexPassword = /(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9 ])[A-Za-z0-9!@#$%^&*()]{8,16}/;
+	var $phoneNumber = $('#phoneNumber');
+	var $password = $('#password');
+	var $password2 = $('#password2');
+	
+	$('#password, #password2, #phoneNumber').after('<strong></strong>');
+	
 	$(function() {
 		$("#postcodify_search_button").postcodifyPopUp();
 	});
+	
+	$password.keyup(function(){
+		var textTip = $(this).next('strong');
+		if($password.val()>7){
+			if (!regexPassword.test($password.val()))
+				textTip.text('숫자, 특수문자 1개 이상 포함. 8자 이상');
+			else
+				textTip.text('');
+		}else
+			textTip.text('');
+	});
 
 	/* [!@#$%^*+=-] 이부분 [^a-zA-Z0-9] 로 대체가능 */
-	$('#password1').keyup(function() {
-		
+	$password2.keyup(function() {
+		var textTip = $(this).next('strong');
+		if($password.val().length === $password2.val().length){
+			if($password.val() !== $password2.val())
+				textTip.text('비밀번호가 틀립니다.');
+			else
+				textTip.text('');
+		}else
+			textTip.text('');
+	});
+	$phoneNumber.keyup(function() {
+		var textTip = $(this).next('strong');
+		if ($phoneNumber.val().length > 13)
+			textTip.text('너무 깁니다.');
+		else if (!regexPhoneNumber.test($phoneNumber.val()))
+			textTip.text('하이픈(-) 포함 입력.');
+		else
+			textTip.text('');
 	});
 	
-	
-	
-	
-	
-	
-	
-	
+	function checkValidate() {
+		
+		if ($('#password').val() !== $('#password2').val()){
+			alert('비밀번호가 틀립니다.');
+			return false;
+		}
+		
+		/* 주소 검사 */
+		else if ($('#postcode5').val() == null) {
+			alert('주소를 입력하세요.');
+			return false;
+		} else if ($('#address').val() == null) {
+			alert('주소를 입력하세요.');
+			return false;
+		} else if ($('#details').val() == null) {
+			alert('주소를 입력하세요.');
+			return false;
+		} else if ($('#extra_info').val() == null) {
+			alert('주소를 입력하세요.');
+			return false;
+		} 
+		
+		/* 전화번호 검사 */
+		else if (!regexPhoneNumber.test($phoneNumber.val())) { // 이메일 검사
+			alert('[전화번호 입력 오류] 유효한 전화번호를 입력해 주세요. ex) 01012345678');
+			return false;
+		} 
+		/* 비밀번호 정규표현식 검사 */
+		else if (!regexPassword.test($password.val())) {
+			alert('비밀번호 입력 오류. 숫자, 특수문자를 1개 이상 포함해야 합니다. (8자 이상)');
+			return false;
+		}
+		/* 정상 */
+		else {
+			return true;
+		}
+	}
+	$('#form').submit(function(){
+		if(!checkValidate())
+			return false;
+	});
 </script>
 </html>
