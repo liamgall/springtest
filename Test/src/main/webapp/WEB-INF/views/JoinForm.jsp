@@ -18,11 +18,11 @@
 <body>
 	<div align="center">
 		<table border="0" width="80%">
-			<form:form action="/join" commandName="userForm">
+			<form:form action="/InfoValidation" commandName="userForm">
 				<tr>
 					<td align="left" width="20%">Email:</td>
-					<td align="left" width="40%"><form:input path="email"
-							size="30" readonly="true"/></td>
+					<td align="left" width="40%"><form:input path="email" value="${eMail}"
+							size="30" readonly="true" style="background-color:#EBEBE4;"/></td>
 					<td align="left"><form:errors path="email" cssClass="error" /></td>
 				</tr>
 				<tr>

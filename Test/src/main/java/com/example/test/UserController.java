@@ -1,32 +1,44 @@
 package com.example.test;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
- 
+
 import javax.validation.Valid;
- 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UserController {
-    @RequestMapping(value = "/join", method = RequestMethod.GET)
-    public String viewLogin(Map<String, Object> model) {
-        User user = new User();
+	
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    public ModelAndView viewLogin(Map<String, Object> model, @RequestParam("eMail") String eMail) throws UnsupportedEncodingException {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("JoinForm");
+        mav.addObject("eMail", java.net.URLDecoder.decode(eMail,"UTF-8"));
+        System.out.println(eMail);
+    	User user = new User();
         model.put("userForm", user);
-        return "LoginForm";
+        return mav;
     }
  
-    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    @RequestMapping(value = "/InfoValidation", method = RequestMethod.POST)
     public String doLogin(@Valid @ModelAttribute("userForm") User userForm,
             BindingResult result, Map<String, Object> model) {
- 
+
+        System.out.println("gggg");
         if (result.hasErrors()) {
-            return "LoginForm";
+            return "JoinForm";
         }
+        System.out.println("ggg"+userForm);
  
-        return "LoginSuccess";
+        return "JoinSuccess";
     }
 }
